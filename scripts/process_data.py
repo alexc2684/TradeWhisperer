@@ -1,19 +1,12 @@
 import numpy as np
 import pandas as pd
+import argparse
 from collections import Counter
 from argparse import ArgumentParser
 from Preprocessor import Preprocessor
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-i', help='Input filename', required=True)
-    parser.add_argument('-o', help='Output filename', required=True)
-    args = parser.parse_args()
-    data = read_file(args.i)
-    data = process_data(data)
-
 def read_file(filename):
-    data = pd.read_csv(filename, sep='\t', headers=None, usecols=[2,3])
+    data = pd.read_csv(filename, sep='\t', header=None, usecols=[2,3])
     return data
 
 def process_data(data):
@@ -54,9 +47,9 @@ def upsample_multiplier(data):
 
      multiplier = 1
      while counts[-1]*multiplier < counts[1]:
-         multiplier += 1
+        multiplier += 1
 
-    return multiplier
+     return multiplier
 
 def write_csv(texts, labels):
     numSamples = len(texts)
@@ -68,3 +61,10 @@ def write_csv(texts, labels):
             if i < numSamples - 1:
                 f.write('\n')
 
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', help='Input filename', required=True)
+    parser.add_argument('-o', help='Output filename', required=True)
+    args = parser.parse_args()
+    data = read_file(args.i)
+    data = process_data(data)
